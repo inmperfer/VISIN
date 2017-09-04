@@ -1,12 +1,12 @@
 
 
-body{border: 0px solid black; color: rgb(150,150,150); margin-top: 0px}
+body{border: 0px solid black; color: rgb(255,255,255); margin-top: 0px}
 
 div{border: 0px solid black}
 
 a{text-decoration: none}
 
-.header{font-size: 48; font-family: 'Merriweather', serif; text-align: center;
+.header{font-size: 42; font-family: 'Vibur', cursive; text-align: center;
 	margin: 0px 10px 0px 10px;
 	padding: 15px 0px 50px; 
 }
@@ -14,7 +14,7 @@ a{text-decoration: none}
 .main{font-family: 'Montserrat', sans-serif; width: 70%; margin: 0 auto}/*Al especificar los margenes derecho e izquierdos en automatico, conseguimos centrar el contenido de la pagina
 con la pantalla*/
 
-.wrapper{float:left; background-color: rgb(230, 240, 220)}/*Este div se ancla a la izquierda del div .main, y por defecto tendra el ancho de su div padre (.main), es decir 70% del ancho de la pantalla*/
+.wrapper{float:left; background-color: rgb(79,132,196)}/*Este div se ancla a la izquierda del div .main, y por defecto tendra el ancho de su div padre (.main), es decir 70% del ancho de la pantalla*/
 
 .sub1{margin: 0px; float: left}/*Contrario a lo que hicimos en clase, solamente aplicamos float a las 3 columnas (div's) principales, y no a los div's interiores. 
 Esto facilita despues mucho las cosas, en particular el centrado de elementos div dentro de otros, ya que cuando los div's no estan en modo float, 

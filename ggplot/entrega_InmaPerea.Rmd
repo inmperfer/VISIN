@@ -1,0 +1,86 @@
+---
+title: "Visualización de datos"
+subtitle: 'Gráficas con ggplot'
+date: "Agosto 2017"
+output: pdf_document
+---
+```{r message=FALSE, warning=FALSE}
+if (!require('ggplot2')) install.packages('ggplot2'); library('ggplot2')
+library(scales)
+```
+
+
+```{r}
+data <- read.csv("data/train.csv", header=T, dec=".", sep=",")
+dim(data)
+head(data)
+summary(data)
+str(data)
+```
+
+```{r}
+cat_var <- names(data)[which(sapply(data, is.character))]
+cat_car <- c(cat_var, 'BedroomAbvGr', 'HalfBath', ' KitchenAbvGr','BsmtFullBath', 'BsmtHalfBath', 'MSSubClass')
+numeric_var <- names(data)[which(sapply(data, is.numeric))]
+
+colSums(sapply(data, is.na))
+colSums(sapply(data[,cat_var, .SDcols = cat_var], is.na))
+colSums(sapply(data[,.SD, .SDcols = numeric_var], is.na))
+```
+
+```{r}
+ggplot(data, aes(factor(Neighborhood), SalePrice)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90, hjust =1)) + xlab('Neighborhoods')
+```
+
+```{r}
+ggplot(data, aes(x=SalePrice)) + geom_histogram(col = 'white') + theme_light() +scale_x_continuous(labels = comma)
+```
+
+
+```{r}
+ggplot(data, aes(1, SalePrice)) +
+geom_boxplot() + coord_flip() +
+xlab('') +
+ylab('Precio de venta')
+
+```
+
+
+
+```{r}
+ggplot(data, aes(x=OverallQual, y=SalePrice)) +
+geom_point() +
+facet_wrap('Neighborhood')
+```
+
+```{r}
+ggplot(data, aes(x=OverallQual, y=SalePrice)) +
+geom_point() +
+facet_wrap('Neighborhood', scales='free_x')
+```
+
+
+
+CONTINUA
+
+caja y bigotes
+diagrama de puntos
+histograma
+estimacion densidad
+Q-Q
+
+
+CATEGÓRICA
+
+diagrama de barras
+grafica de puntos
+gráfico circular
+
+
+BIVARIANTE(CONTINUAS)
+diagrama de dispersion
+matriz de dispersion
+
+MULTIVARIANTE
+coordenadas paralelas
+graficos facetados

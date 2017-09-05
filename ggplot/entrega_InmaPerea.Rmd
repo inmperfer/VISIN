@@ -6,7 +6,9 @@ output: pdf_document
 ---
 ```{r message=FALSE, warning=FALSE}
 if (!require('ggplot2')) install.packages('ggplot2'); library('ggplot2')
-library(scales)
+if (!require('scales')) install.packages('scales'); library('scales')
+if (!require('forcats')) install.packages('forcats'); library('forcats')
+if (!require('GGally')) install.packages('GGally'); library('GGally')
 ```
 
 
@@ -23,10 +25,23 @@ cat_var <- names(data)[which(sapply(data, is.character))]
 cat_car <- c(cat_var, 'BedroomAbvGr', 'HalfBath', ' KitchenAbvGr','BsmtFullBath', 'BsmtHalfBath', 'MSSubClass')
 numeric_var <- names(data)[which(sapply(data, is.numeric))]
 
-colSums(sapply(data, is.na))
-colSums(sapply(data[,cat_var, .SDcols = cat_var], is.na))
-colSums(sapply(data[,.SD, .SDcols = numeric_var], is.na))
+#colSums(sapply(data, is.na))
+#colSums(sapply(data[,cat_var, .SDcols = cat_var], is.na))
+#colSums(sapply(data[,.SD, .SDcols = numeric_var], is.na))
 ```
+```{r}
+library(data.table)
+train <- fread("data/train.csv", header=T, dec=".", sep=",")
+cat_var <- names(train)[unlist(lapply(train, is.character))]
+cat_var
+
+numeric_var <- names(train)[which(sapply(train, is.numeric))]
+numeric_var
+
+train[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = cat_var]
+train[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = numeric_var]
+```
+
 
 ```{r}
 ggplot(data, aes(factor(Neighborhood), SalePrice)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90, hjust =1)) + xlab('Neighborhoods')
@@ -59,6 +74,108 @@ geom_point() +
 facet_wrap('Neighborhood', scales='free_x')
 ```
 
+```{r}
+ggplot(data, aes(x=GarageArea, y=SalePrice)) +
+geom_point() +
+scale_y_log10() +
+stat_ellipse(type='norm')
+```
+
+
+
+```{r}
+ggplot(data, aes(x=OverallQual, y=SalePrice, colour=Neighborhood)) + geom_point()
+```
+```{r}
+ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=as.factor(OverallQual))) + geom_point()
+```
+
+
+
+```{r}
+ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=KitchenQual)) + geom_point()
+```
+
+
+```{r}
+ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=GarageArea)) + geom_point()
+```
+
+```{r}
+ggplot(data, aes(x=TotalBsmtSF, y=SalePrice, color=LotConfig)) + geom_point()
+```
+```{r}
+ggplot(data, aes(SalePrice)) +
+geom_histogram(bins=nclass.Sturges(data$SalePrice)) +
+xlab('Precio de las viviendas') +
+ylab('') +
+ggtitle('Histograma del precio de la vivienda')
+```
+
+
+```{r}
+ggplot(data, aes(forcats::fct_infreq(LotConfig))) + geom_bar()
+```
+
+
+
+```{r}
+ggplot(data, aes(forcats::fct_infreq(Neighborhood))) + geom_bar() + coord_flip()
+```
+
+
+```{r}
+ggplot(data,
+aes(reorder(Neighborhood, SalePrice), SalePrice)) +
+geom_bar(stat='identity') + coord_flip()
+```
+
+```{r}
+ggplot(data,
+aes(reorder(Neighborhood, SalePrice), SalePrice)) +
+geom_bar(stat='identity') + coord_flip()
+```
+
+
+```{r}
+ggpairs(data, aes(color=SalePrice), columns=2:7,
+upper=list(continuous='points'),
+diag=list(continuous='blankDiag'),
+axisLabels='internal')
+```
+
+```{r}
+ggparcoord(data, columns=1:20, alphaLines=0.1,
+scale='center', scaleSummary='median') +
+xlab('') + ylab('') +
+scale_x_discrete(labels=NULL)
+```
+```{r}
+ggplot(data, aes(SalePrice)) +
+geom_histogram(binwidth=1) +
+facet_wrap('Neighborhood', nrow=2)
+```
+
+
+
+
+
+1stFlrSF
+BsmtFinSF1
+Exterior1st
+ExterQual
+GarageArea
+GarageCars
+GrLivArea
+KitchenQual
+LotArea
+LotConfig
+Neighborhood
+OverallCond
+OverallQual
+TotalBsmtSF
+WoodDeckSF
+YearBuilt
 
 
 CONTINUA

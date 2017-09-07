@@ -5,10 +5,15 @@ date: "Agosto 2017"
 output: pdf_document
 ---
 ```{r message=FALSE, warning=FALSE}
+if (!require('Rcpp')) install.packages('Rcpp'); library('Rcpp')
+if (!require('naniar')) install.packages('naniar'); library('naniar')
 if (!require('ggplot2')) install.packages('ggplot2'); library('ggplot2')
 if (!require('scales')) install.packages('scales'); library('scales')
 if (!require('forcats')) install.packages('forcats'); library('forcats')
 if (!require('GGally')) install.packages('GGally'); library('GGally')
+if (!require('mi')) install.packages('mi'); library('mi')
+if (!require('extracat')) install.packages('extracat'); library('extracat')
+if (!require('data.table')) install.packages('data.table'); library('data.table')
 ```
 
 
@@ -88,6 +93,8 @@ stat_ellipse(type='norm')
 ```{r}
 ggplot(data, aes(x=OverallQual, y=SalePrice, colour=Neighborhood)) + geom_point()
 ```
+
+
 ```{r}
 ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=as.factor(OverallQual))) + geom_point()
 ```
@@ -106,6 +113,8 @@ ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=GarageArea)) + geom_point()
 ```{r}
 ggplot(data, aes(x=TotalBsmtSF, y=SalePrice, color=LotConfig)) + geom_point()
 ```
+
+
 ```{r}
 ggplot(data, aes(SalePrice)) +
 geom_histogram(bins=nclass.Sturges(data$SalePrice)) +
@@ -140,10 +149,10 @@ geom_bar(stat='identity') + coord_flip()
 
 
 ```{r}
-ggpairs(data, aes(color=SalePrice), columns=2:7,
-upper=list(continuous='points'),
-diag=list(continuous='blankDiag'),
-axisLabels='internal')
+#ggpairs(data, aes(color=SalePrice), columns=2:7,
+#upper=list(continuous='points'),
+#diag=list(continuous='blankDiag'),
+#axisLabels='internal')
 ```
 
 ```{r}
@@ -153,9 +162,9 @@ xlab('') + ylab('') +
 scale_x_discrete(labels=NULL)
 ```
 ```{r}
-ggplot(data, aes(SalePrice)) +
-geom_histogram(binwidth=1) +
-facet_wrap('Neighborhood', nrow=2)
+#ggplot(data, aes(SalePrice)) +
+#geom_histogram(binwidth=1) +
+#facet_wrap('Neighborhood', nrow=2)
 ```
 
 
@@ -179,6 +188,12 @@ theme_bw()
 ```{r}
 ggsave('grafico.png')
 ```
+
+
+```{r}
+ggplot(data = data, aes(x=LotFrontage, y=SalePrice)) + geom_missing_point()
+```
+
 
 
 1stFlrSF

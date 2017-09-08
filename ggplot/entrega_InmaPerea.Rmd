@@ -191,9 +191,74 @@ ggsave('grafico.png')
 
 
 ```{r}
+ggplot(data = data, aes(x=GarageYrBlt, y=SalePrice)) + geom_missing_point()
+```
+
+ggplot(data = bind_shadow(airquality),
+aes(x = Temp, color = Ozone_NA)) +
+geom_density()
+
+
+```{r}
 ggplot(data = data, aes(x=LotFrontage, y=SalePrice)) + geom_missing_point()
 ```
 
+
+```{r}
+ggplot(data = data, aes(x=MasVnrArea, y=SalePrice)) + geom_missing_point()
+```
+
+
+
+```{r}
+ggplot(data = bind_shadow(data),
+aes(x = SalePrice, color = LotFrontage_NA)) +
+geom_density()
+```
+
+```{r}
+ggplot(data = bind_shadow(data),
+aes(x = SalePrice, color = MasVnrType_NA)) +
+geom_density()
+```
+
+```{r}
+ggplot(data = bind_shadow(data),
+aes(x = SalePrice, color = MasVnrArea_NA)) +
+geom_density()
+```
+```{r}
+ggplot(data = bind_shadow(data),
+aes(x = SalePrice, color = GarageYrBlt_NA)) +
+geom_density()
+```
+```{r}
+ggplot(data = bind_shadow(data),
+aes(x = SalePrice, color = Electrical_NA)) +
+geom_density()
+```
+MasVnrType
+MasVnrArea
+Electrical
+GarageYrBlt
+LotFrontage
+
+
+
+
+
+
+
+
+```{r}
+visdat::vis_miss(data[,2:35]) + coord_flip()
+```
+```{r}
+visdat::vis_miss(data[, 2:40], cluster = TRUE) + coord_flip()
+```
+```{r}
+visdat::vis_miss(data[, 41:81], cluster = TRUE) + coord_flip()
+```
 
 
 1stFlrSF

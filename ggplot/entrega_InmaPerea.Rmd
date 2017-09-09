@@ -1,9 +1,20 @@
 ---
-title: "Visualización de datos"
+title: "Evaluación asigunaturas Visualización de datos y Visualización de la información"
 subtitle: 'Gráficas con ggplot'
+author: "Inmaculada Perea Fern?ndez"
 date: "Agosto 2017"
 output: pdf_document
 ---
+
+El conjunto de datos elegido para este trabajo es uno de los datasets de aprendizaje de kaggle, en el que el objetivo es predecir el precio de venta de viviendas (variable objetivo *SalePrice*) a partir de sus características. 
+
+Para más información ir a:
+
+https://www.kaggle.com/c/house-prices-advanced-regression-techniques
+
+
+
+# 1. Carga de librerías y opciones por defecto
 ```{r message=FALSE, warning=FALSE}
 if (!require('Rcpp')) install.packages('Rcpp'); library('Rcpp')
 if (!require('naniar')) install.packages('naniar'); library('naniar')
@@ -20,51 +31,32 @@ if (!require('ggalt')) install.packages('ggalt'); library('ggalt')
 if (!require('ggExtra')) install.packages('ggExtra'); library('ggExtra')
 ```
 
+
 ```{r}
+# deshabilita la notación científica
 options(scipen=999)
+
+# Establece tema por defecto
 theme_set(theme_bw())
 ```
 
 
 
+# 2. Carga y resumen de los datos 
 ```{r}
 data <- read.csv("data/train.csv", header=T, dec=".", sep=",")
 dim(data)
-head(data)
 summary(data)
 str(data)
 ```
 
-```{r}
-cat_var <- names(data)[which(sapply(data, is.character))]
-cat_car <- c(cat_var, 'BedroomAbvGr', 'HalfBath', ' KitchenAbvGr','BsmtFullBath', 'BsmtHalfBath', 'MSSubClass')
-numeric_var <- names(data)[which(sapply(data, is.numeric))]
 
-#colSums(sapply(data, is.na))
-#colSums(sapply(data[,cat_var, .SDcols = cat_var], is.na))
-#colSums(sapply(data[,.SD, .SDcols = numeric_var], is.na))
-```
-
+# 3. Análisis Gráfico de datos
 
 ```{r}
-library(data.table)
-train <- fread("data/train.csv", header=T, dec=".", sep=",")
-cat_var <- names(train)[unlist(lapply(train, is.character))]
-cat_var
+luxury <- data %>% filter(SalePrice > 500000)
 
-numeric_var <- names(train)[which(sapply(train, is.numeric))]
-numeric_var
-
-train[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = cat_var]
-train[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = numeric_var]
-```
-```{r}
-luxury <- data %>%
-filter(SalePrice > 500000)
-```
-
-```{r}
-gg <- ggplot(data, aes( x=TotalBsmtSF, y=SalePrice)) + 
+ggplot(data, aes( x=TotalBsmtSF, y=SalePrice)) + 
   geom_point(aes(col=SaleCondition, size=OverallCond)) + 
   geom_smooth(method="loess", se=F) + 
   geom_encircle(aes(x=TotalBsmtSF, y=SalePrice), 
@@ -76,12 +68,14 @@ gg <- ggplot(data, aes( x=TotalBsmtSF, y=SalePrice)) +
        x="Tamaño del sótano", 
        title="Precio de venta Vs Tamaño del sótano")
 
-plot(gg)
 ```
 
 
 ```{r}
-ggplot(data, aes(x=SalePrice)) + geom_histogram(col = 'white') + theme_light() +scale_x_continuous(labels = comma)
+ggplot(data, aes(x=SalePrice)) + 
+  geom_histogram(col = 'white') + 
+  theme_light() +
+  scale_x_continuous(labels = comma)
 ```
 
 
@@ -133,12 +127,14 @@ stat_ellipse(type='norm')
 
 
 ```{r}
-ggplot(data, aes(x=OverallQual, y=SalePrice, colour=Neighborhood)) + geom_point()
+ggplot(data, aes(x=OverallQual, y=SalePrice, colour=Neighborhood)) + 
+  geom_point()
 ```
 
 
 ```{r}
-ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=as.factor(OverallQual))) + geom_point()
+ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=as.factor(OverallQual))) + 
+  geom_point()
 ```
 
 
@@ -149,12 +145,15 @@ ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=KitchenQual)) + geom_point()
 
 
 ```{r}
-ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=GarageArea)) + geom_point() +
-theme_light() + scale_colour_gradientn(colours=rainbow(6))
+ggplot(data, aes(x=YearBuilt, y=SalePrice, colour=GarageArea)) + 
+  geom_point() +
+  theme_light() + 
+  scale_colour_gradientn(colours=rainbow(6))
 ```
 
 ```{r}
-ggplot(data, aes(x=TotalBsmtSF, y=SalePrice, color=LotConfig)) + geom_point()
+ggplot(data, aes(x=TotalBsmtSF, y=SalePrice, color=LotConfig)) + 
+  geom_point()
 ```
 
 ```{r}
@@ -205,7 +204,8 @@ ggtitle('Histograma del precio de la vivienda')
 
 
 ```{r}
-ggplot(data, aes(forcats::fct_infreq(LotConfig))) + geom_bar()
+ggplot(data, aes(forcats::fct_infreq(LotConfig))) + 
+  geom_bar()
 ```
 ```{r}
 pie <- ggplot(data, aes(x = "", fill =Exterior1st )) + 
@@ -223,7 +223,9 @@ pie + coord_polar(theta = "y", start=0)
 
 
 ```{r}
-ggplot(data, aes(forcats::fct_infreq(Neighborhood))) + geom_bar() + coord_flip()
+ggplot(data, aes(forcats::fct_infreq(Neighborhood))) + 
+  geom_bar() + 
+  coord_flip()
 ```
 
 
@@ -239,13 +241,6 @@ aes(reorder(Neighborhood, SalePrice), SalePrice)) +
 geom_bar(stat='identity') + coord_flip()
 ```
 
-
-```{r}
-#ggpairs(data, aes(color=SalePrice), columns=2:7,
-#upper=list(continuous='points'),
-#diag=list(continuous='blankDiag'),
-#axisLabels='internal')
-```
 
 ```{r}
 ggparcoord(data, columns=1:20, alphaLines=0.1,
@@ -256,34 +251,30 @@ scale_x_discrete(labels=NULL) + theme_light()
 
 ```{r}
 ggplot(data, aes(ExterQual, SalePrice, colour=YearBuilt)) +
-geom_point() + coord_flip() +
-facet_grid(LotConfig ~ ., as.table=FALSE) +
-theme_light() + scale_colour_gradientn(colours=rainbow(6))
+  geom_point() + 
+  facet_grid(LotConfig ~ ., as.table=FALSE) +
+  theme_light() + 
+  coord_flip() +
+  scale_colour_gradientn(colours=rainbow(6))
 ```
 
 
 ```{r}
 ggplot(data, aes(YearBuilt, SalePrice, colour=GarageQual)) +
-geom_point() + coord_flip() +
-facet_grid(as.factor(OverallQual) ~ ., as.table=FALSE) +
-theme_bw()
+  geom_point() + 
+  facet_grid(as.factor(OverallQual) ~ ., as.table=FALSE) +
+  coord_flip() +
+  theme_bw()
 ```
 
+
+
+# 4. Análisis gráfico de valores perdidos
 
 ```{r}
-ggsave('grafico.png')
+ggplot(data = data, aes(x=GarageYrBlt, y=SalePrice)) + 
+  geom_missing_point()
 ```
-
-# Valores perdidos
-
-```{r}
-ggplot(data = data, aes(x=GarageYrBlt, y=SalePrice)) + geom_missing_point()
-```
-
-ggplot(data = bind_shadow(airquality),
-aes(x = Temp, color = Ozone_NA)) +
-geom_density()
-
 
 ```{r}
 ggplot(data = data, aes(x=LotFrontage, y=SalePrice)) + geom_missing_point()
@@ -329,37 +320,19 @@ data %>% select(YearBuilt, YearRemodAdd) %>%    mutate(Remodeled = as.integer(Ye
 
 
 ```{r}
-gg_missing_var(data[,colSums(is.na(train)) > 0])
+gg_missing_var(data[,colSums(is.na(data)) > 0])
 ```
 
 ```{r}
-gg_missing_var(data[,2:40])
-```
-```{r}
-gg_missing_var(data[,41:81])
-```
-
-
-```{r}
-visdat::vis_miss(data[, 2:40], cluster = TRUE, sort_miss = TRUE) + coord_flip()
-```
-
-
-```{r}
-visdat::vis_miss(data[, 41:81], cluster = TRUE, sort_miss = TRUE) + coord_flip()
+visdat::vis_miss(data[,colSums(is.na(data)) > 0], cluster = TRUE, sort_miss = TRUE) + coord_flip()
 ```
 
 ```{r}
-extracat::visna(data[, 2:40], sort = "b")
-```
-
-```{r}
-extracat::visna(data[, 41:81], sort = "b")
+extracat::visna(data[,colSums(is.na(data)) > 0], sort = "b")
 ```
 
 
-
-# Valores atípicos
+# 5. Análisis gráfico de valores atípicos
 
 ```{r}
 ggplot(data, aes(1, SalePrice)) +
@@ -404,7 +377,7 @@ geom_density2d(bins = 4, color = "red") +
 geom_smooth()
 ```
 
-# Análisis gráfico con  modelos
+# 6. Análisis gráfico con  modelos
 
 ```{r}
 modelo_lineal <- lm(SalePrice ~ TotalBsmtSF, data = data)
@@ -465,55 +438,3 @@ head(obs_sum, 5)
 ggplot(obs_sum, aes(abs(.std.resid))) +
 geom_histogram(binwidth = 0.1) + theme_light()
 ```
-
-
-MasVnrType
-MasVnrArea
-Electrical
-GarageYrBlt
-LotFrontage
-
-
-
-
-1stFlrSF
-BsmtFinSF1
-Exterior1st
-ExterQual
-GarageArea
-GarageCars
-GrLivArea
-KitchenQual
-LotArea
-LotConfig
-Neighborhood
-OverallCond
-OverallQual
-TotalBsmtSF
-WoodDeckSF
-YearBuilt
-
-
-CONTINUA
-
-caja y bigotes
-diagrama de puntos
-histograma
-estimacion densidad
-Q-Q
-
-
-CATEGÓRICA
-
-diagrama de barras
-grafica de puntos
-gráfico circular
-
-
-BIVARIANTE(CONTINUAS)
-diagrama de dispersion
-matriz de dispersion
-
-MULTIVARIANTE
-coordenadas paralelas
-graficos facetados

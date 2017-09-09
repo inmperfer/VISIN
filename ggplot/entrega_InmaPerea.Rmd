@@ -157,6 +157,43 @@ theme_light() + scale_colour_gradientn(colours=rainbow(6))
 ggplot(data, aes(x=TotalBsmtSF, y=SalePrice, color=LotConfig)) + geom_point()
 ```
 
+```{r}
+ggplot(data, aes(x=as.factor(MoSold), y=SalePrice)) + 
+  geom_point(col="tomato2", size=1.5) +  
+  geom_segment(aes(x=MoSold, 
+                   xend=MoSold, 
+                   y=min(SalePrice), 
+                   yend=max(SalePrice)), 
+               linetype="dashed", 
+               size=0.1) +  
+  labs(title="Precio de la vivienda según mes de venta")  
+
+```
+
+```{r}
+g <- ggplot(data, aes(MoSold))
+g + geom_density(aes(fill=factor(YrSold)), alpha=0.4) + 
+    labs(title="Meses de venta agrupados por años",
+         x="Mes de venta",
+         fill="# Año de venta")
+```
+
+
+```{r}
+ggplot(data, aes(SalePrice, as.factor(MoSold))) +
+geom_point() + coord_flip() +
+facet_grid(YrSold ~ ., as.table=FALSE) +
+theme_light() + scale_colour_gradientn(colours=rainbow(6))
+```
+
+```{r}
+ggplot(data, aes(x=TotRmsAbvGrd, y=FullBath)) + 
+  geom_bar(stat="identity", width=.5, fill="tomato3") + 
+  labs(title="Número de habitaciones vs Número de baños") + 
+  theme(axis.text.x = element_text(angle=65, vjust=0.6))
+```
+
+
 
 ```{r}
 ggplot(data, aes(SalePrice)) +

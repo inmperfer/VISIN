@@ -56,6 +56,7 @@ str(data)
 ## 3.1 Gráficos univariantes
 
 
+### 3.1.1 Gráficos de barras
 ```{r message=FALSE, warning=FALSE}
 ggplot(data, aes(x=SalePrice)) + 
   geom_histogram(col = 'white', fill="steelblue") + 
@@ -85,6 +86,19 @@ ggplot(data, aes(forcats::fct_infreq(LotConfig))) +
 ```
 
 
+
+
+```{r message=FALSE, warning=FALSE}
+ggplot(data, aes(forcats::fct_infreq(Neighborhood))) + 
+  geom_bar(fill="steelblue") + 
+  coord_flip() +
+  labs(x="Barrio", 
+       y="Frecuencia", 
+       title="Barrios en los que se ubican las viviendas en venta") +
+  theme_minimal()
+```
+### 3.1.2 Gráficos de sectores
+
 ```{r message=FALSE, warning=FALSE}
 pie <- ggplot(data, aes(x = "", fill =Exterior1st )) + 
   geom_bar(width = 1) +
@@ -99,19 +113,9 @@ pie <- ggplot(data, aes(x = "", fill =Exterior1st )) +
 pie + coord_polar(theta = "y", start=0)
 ```
 
-
-```{r message=FALSE, warning=FALSE}
-ggplot(data, aes(forcats::fct_infreq(Neighborhood))) + 
-  geom_bar(fill="steelblue") + 
-  coord_flip() +
-  labs(x="Barrio", 
-       y="Frecuencia", 
-       title="Barrios en los que se ubican las viviendas en venta") +
-  theme_minimal()
-```
-
 ## 3.2 Gráficos bivariante
 
+### 3.2.1 Gráficos de puntos
 
 ```{r}
 ggplot(data, aes(x=SaleCondition, y=SalePrice)) +
@@ -178,14 +182,18 @@ ggplot(data, aes(x=as.factor(MoSold), y=SalePrice)) +
 
 ```
 
+
+
+### 3.2.2 Gráficos de barras
 ```{r message=FALSE, warning=FALSE}
-g <- ggplot(data, aes(MoSold))
-g + geom_density(aes(fill=factor(YrSold)), alpha=0.4) + 
-    labs(title="Meses de venta agrupados por años",
-         x="Mes de venta",
-         y="Densidad",
-         fill="# Año de venta (YrSold)") +
-  theme_minimal()
+ggplot(data, aes(reorder(Neighborhood, SalePrice), SalePrice)) +
+  geom_bar(stat='identity', fill="steelblue") + 
+  coord_flip() +
+  theme_light() +
+  labs(y="Precio de venta", 
+       x="Vecindario", 
+       title="Precio de según vecindario")
+  
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -213,8 +221,20 @@ data %>% select(YearBuilt, YearRemodAdd) %>%
   theme_minimal() 
 ```
 
-## 3.3 Gráficos multivariante
+### 3.2.3 Gráfico de densidad
 
+```{r message=FALSE, warning=FALSE}
+g <- ggplot(data, aes(MoSold))
+g + geom_density(aes(fill=factor(YrSold)), alpha=0.4) + 
+    labs(title="Meses de venta agrupados por años",
+         x="Mes de venta",
+         y="Densidad",
+         fill="# Año de venta (YrSold)") +
+  theme_minimal()
+```
+
+
+## 3.3 Gráficos multivariante
 
 ### 3.3.1 Gráficos facetados
 ```{r message=FALSE, warning=FALSE}
@@ -321,21 +341,8 @@ ggplot(data, aes( x=TotalBsmtSF, y=SalePrice)) +
 
 ```
 
-### 3.3.3 Gráficos de barras
 
-```{r message=FALSE, warning=FALSE}
-ggplot(data, aes(reorder(Neighborhood, SalePrice), SalePrice)) +
-  geom_bar(stat='identity') + coord_flip()
-```
-
-```{r message=FALSE, warning=FALSE}
-ggplot(data,
-aes(reorder(Neighborhood, SalePrice), SalePrice)) +
-geom_bar(stat='identity') + coord_flip()
-```
-
-
-### 3.3.4 Gráfico de coordenadas paralelas
+### 3.3.3 Gráfico de coordenadas paralelas
 ```{r message=FALSE, warning=FALSE}
 ggparcoord(data, columns=1:20, alphaLines=0.1, scale='center', scaleSummary='median') +
   xlab('') + ylab('') +
@@ -349,11 +356,15 @@ ggparcoord(data, columns=1:20, alphaLines=0.1, scale='center', scaleSummary='med
 # 4. Análisis gráfico de valores perdidos
 
 ```{r message=FALSE, warning=FALSE}
-gg_missing_var(data[,colSums(is.na(data)) > 0])
+gg_missing_var(data[,colSums(is.na(data)) > 0]) +
+  labs(y="Número de valores perdidos", 
+       x="Variables")
 ```
 
 ```{r message=FALSE, warning=FALSE}
-visdat::vis_miss(data[,colSums(is.na(data)) > 0], cluster = TRUE, sort_miss = TRUE) + coord_flip()
+visdat::vis_miss(data[,colSums(is.na(data)) > 0], cluster = TRUE, sort_miss = TRUE) + 
+  coord_flip() +
+    labs(y="Número de valores perdidos", x="Variables")
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -362,47 +373,63 @@ extracat::visna(data[,colSums(is.na(data)) > 0], sort = "b")
 
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = data, aes(x=GarageYrBlt, y=SalePrice)) + 
-  geom_missing_point()
+  geom_missing_point() +
+  theme_light() +
+  labs(y="Precio de la vivienda", 
+       x="Año de construcción de la vivienda", 
+       title="Valores perdidos pra el año de contrucción vs Precio de venta")
 ```
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = data, aes(x=LotFrontage, y=SalePrice)) + geom_missing_point()
+ggplot(data = data, aes(x=LotFrontage, y=SalePrice)) + 
+  geom_missing_point() + 
+  theme_light() +
+  labs(y="Precio de la vivienda", 
+       x="Anchura de la calle", 
+       title="Valores perdidos para la anchura de la calle vs Precio de venta")
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = data, aes(x=MasVnrArea, y=SalePrice)) + geom_missing_point()
+ggplot(data = data, aes(x=MasVnrArea, y=SalePrice)) + 
+  geom_missing_point() +
+  theme_light() +
+  labs(y="Precio de la vivienda", 
+       x="Superfice construida (ft2)", 
+       title="Valores perdidos para superficie construida vs Precio de venta")
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = bind_shadow(data),
-aes(x = SalePrice, color = LotFrontage_NA)) +
-geom_density()
+ggplot(data = bind_shadow(data), aes(x = SalePrice, color = LotFrontage_NA)) +
+geom_density()+ 
+  theme_light() +
+  labs(y="Densidad", 
+       x="Anchura de la calle (ft)")
 ```
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = bind_shadow(data),
-aes(x = SalePrice, color = MasVnrType_NA)) +
-geom_density()
+ggplot(data = bind_shadow(data), aes(x = SalePrice, color = MasVnrType_NA)) +
+  geom_density()+ 
+  theme_light() +
+  labs(y="Densidad", 
+       x="Tipo de materiales")
 ```
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = bind_shadow(data),
-aes(x = SalePrice, color = MasVnrArea_NA)) +
-geom_density()
+ggplot(data = bind_shadow(data), aes(x = SalePrice, color = MasVnrArea_NA)) +
+  geom_density() +
+  theme_light() +
+  labs(y="Densidad", 
+       x="Superfice construida (ft2)")
 ```
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = bind_shadow(data),
-aes(x = SalePrice, color = GarageYrBlt_NA)) +
-geom_density()
-```
-
-```{r message=FALSE, warning=FALSE}
-ggplot(data = bind_shadow(data),
-aes(x = SalePrice, color = Electrical_NA)) +
-geom_density()
+ggplot(data = bind_shadow(data), aes(x = SalePrice, color = GarageYrBlt_NA)) +
+   geom_density() +
+   theme_light() +
+   labs(y="Densidad", 
+        x="Año de construcción del garaje)")
 ```
 
 
@@ -412,38 +439,52 @@ geom_density()
 
 ```{r message=FALSE, warning=FALSE}
 ggplot(data, aes(1, SalePrice)) +
-geom_boxplot() + coord_flip() +
-xlab('') +
-ylab('Precio de venta')
+  geom_boxplot(outlier.colour = "tomato2") + 
+  coord_flip() +
+  xlab('') +
+  ylab('Precio de venta') +
+  theme_minimal()
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
 ggplot(data, aes(SaleCondition, SalePrice)) +
-geom_boxplot() 
+  geom_boxplot(outlier.colour = "tomato2") +
+  theme_minimal()
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
-ggparcoord(data, columns = 2:10,
-scale = "uniminmax") + theme_light()
+ggparcoord(data, columns = 2:10, scale = "uniminmax") + 
+  theme_light()
 ```
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data, aes(factor(Neighborhood), SalePrice)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90, hjust =1)) + xlab('Neighborhoods')
+ggplot(data, aes(factor(Neighborhood), SalePrice)) + 
+  geom_boxplot(outlier.colour = "tomato2") + 
+  theme(axis.text.x = element_text(angle = 90, hjust =1)) + 
+  xlab('Vecindario')+ 
+  ylab("Precio de venta")
 ```
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data, aes(TotalBsmtSF, SalePrice)) + geom_point() +
-geom_density2d(bins = 4, color = "red") +
-geom_smooth()
+ggplot(data, aes(TotalBsmtSF, SalePrice)) + 
+  geom_point() +
+  geom_density2d(bins = 4, color = "red") +
+  geom_smooth() + 
+  theme_minimal() +
+  xlab("Superficie del sótano (ft2)") +
+  ylab("Precio de venta")
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
-ggplot(data, aes(YearBuilt, SalePrice)) + geom_point() +
-geom_density2d(bins = 4, color = "red") +
-geom_smooth()
+ggplot(data, aes(YearBuilt, SalePrice)) + 
+  geom_point() +
+  geom_density2d(bins = 4, color = "red") +
+  geom_smooth() +
+  xlab("Año de construcción") +
+  ylab("Precio de venta")
 ```
 
 # 6. Análisis gráfico con  modelos
@@ -451,26 +492,26 @@ geom_smooth()
 ```{r message=FALSE, warning=FALSE}
 modelo_lineal <- lm(SalePrice ~ TotalBsmtSF, data = data)
 
-ggplot(data, aes(TotalBsmtSF, SalePrice)) + geom_point() +
-geom_abline(intercept = coef(modelo_lineal)[1],
-slope = coef(modelo_lineal)[2],
-color = "red")
+ggplot(data, aes(TotalBsmtSF, SalePrice)) + 
+  geom_point(color="steelblue") +
+  geom_abline(intercept = coef(modelo_lineal)[1],
+              slope = coef(modelo_lineal)[2], color = "red") +
+  theme_minimal() +
+  xlab("Superficie del sótano (ft2)") +
+  ylab("Precio de venta")
 ```
 
 
-```{r message=FALSE, warning=FALSE}
-modelo_lineal <- lm(SalePrice ~ TotalBsmtSF, data = data)
-
-ggplot(data, aes(TotalBsmtSF, SalePrice)) + geom_point() +
-geom_abline(intercept = coef(modelo_lineal)[1],
-slope = coef(modelo_lineal)[2],
-color = "red")
-```
 
 ```{r message=FALSE, warning=FALSE}
 data2 <- data %>% mutate(rel_price = resid(modelo_lineal))
+
 ggplot(data2, aes(TotalBsmtSF, rel_price)) +
-geom_point()
+  geom_point(color="steelblue") +
+    theme_minimal() +
+  xlab("Superficie del sótano (ft2)") +
+  ylab("Precio de venta")
+  
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -496,7 +537,10 @@ head(model_sum, 4)
 ```
 ```{r message=FALSE, warning=FALSE}
 ggplot(model_sum, aes(r.squared, reorder(Neighborhood, r.squared))) +
-geom_point()
+  geom_point(color="steelblue") +
+    theme_minimal() +
+  xlab("R cuadrado") +
+  ylab("Vecindario")
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -504,5 +548,7 @@ obs_sum <- models %>% broom::augment(mod)
 head(obs_sum, 5)
 
 ggplot(obs_sum, aes(abs(.std.resid))) +
-geom_histogram(binwidth = 0.1) + theme_light()
+  geom_histogram(binwidth = 0.1, fill="steelblue", color="gray") + 
+  theme_minimal() +
+  xlab("residuo") 
 ```

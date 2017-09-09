@@ -14,6 +14,7 @@ if (!require('GGally')) install.packages('GGally'); library('GGally')
 if (!require('mi')) install.packages('mi'); library('mi')
 if (!require('extracat')) install.packages('extracat'); library('extracat')
 if (!require('data.table')) install.packages('data.table'); library('data.table')
+if (!require('dplyr')) install.packages('dplyr'); library('dplyr')
 ```
 
 
@@ -50,22 +51,11 @@ train[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = numeric_var]
 ```
 
 
-```{r}
-ggplot(data, aes(factor(Neighborhood), SalePrice)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90, hjust =1)) + xlab('Neighborhoods')
-```
 
 ```{r}
 ggplot(data, aes(x=SalePrice)) + geom_histogram(col = 'white') + theme_light() +scale_x_continuous(labels = comma)
 ```
 
-
-```{r}
-ggplot(data, aes(1, SalePrice)) +
-geom_boxplot() + coord_flip() +
-xlab('') +
-ylab('Precio de venta')
-
-```
 
 
 
@@ -161,12 +151,6 @@ scale='center', scaleSummary='median') +
 xlab('') + ylab('') +
 scale_x_discrete(labels=NULL)
 ```
-```{r}
-#ggplot(data, aes(SalePrice)) +
-#geom_histogram(binwidth=1) +
-#facet_wrap('Neighborhood', nrow=2)
-```
-
 
 ```{r}
 ggplot(data, aes(ExterQual, SalePrice, colour=YearBuilt)) +
@@ -181,7 +165,6 @@ ggplot(data, aes(YearBuilt, SalePrice, colour=GarageQual)) +
 geom_point() + coord_flip() +
 facet_grid(as.factor(OverallQual) ~ ., as.table=FALSE) +
 theme_bw()
-
 ```
 
 
@@ -189,6 +172,7 @@ theme_bw()
 ggsave('grafico.png')
 ```
 
+# Valores perdidos
 
 ```{r}
 ggplot(data = data, aes(x=GarageYrBlt, y=SalePrice)) + geom_missing_point()
@@ -237,6 +221,76 @@ ggplot(data = bind_shadow(data),
 aes(x = SalePrice, color = Electrical_NA)) +
 geom_density()
 ```
+
+
+```{r}
+gg_missing_var(data[,2:40])
+```
+```{r}
+gg_missing_var(data[,41:81])
+```
+
+
+```{r}
+visdat::vis_miss(data[, 2:40], cluster = TRUE, sort_miss = TRUE) + coord_flip()
+```
+
+
+```{r}
+visdat::vis_miss(data[, 41:81], cluster = TRUE, sort_miss = TRUE) + coord_flip()
+```
+
+```{r}
+extracat::visna(data[, 2:40], sort = "b")
+```
+
+```{r}
+extracat::visna(data[, 41:81], sort = "b")
+```
+
+
+
+# Valores atípicos
+
+```{r}
+ggplot(data, aes(1, SalePrice)) +
+geom_boxplot() + coord_flip() +
+xlab('') +
+ylab('Precio de venta')
+```
+
+```{r}
+data %>%
+select(SalePrice) %>%
+filter(SalePrice > 350000)
+```
+
+```{r}
+ggparcoord(data, columns = 2:10,
+scale = "uniminmax")
+```
+
+```{r}
+ggplot(data, aes(factor(Neighborhood), SalePrice)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90, hjust =1)) + xlab('Neighborhoods')
+```
+
+```{r}
+ggplot(data, aes(TotalBsmtSF, SalePrice)) + geom_point() +
+geom_density2d(bins = 4, color = "red") +
+geom_smooth()
+```
+
+
+```{r}
+ggplot(data, aes(YearBuilt, SalePrice)) + geom_point() +
+geom_density2d(bins = 4, color = "red") +
+geom_smooth()
+```
+
+```{r}
+```
+
+
 MasVnrType
 MasVnrArea
 Electrical
@@ -244,21 +298,6 @@ GarageYrBlt
 LotFrontage
 
 
-
-
-
-
-
-
-```{r}
-visdat::vis_miss(data[,2:35]) + coord_flip()
-```
-```{r}
-visdat::vis_miss(data[, 2:40], cluster = TRUE) + coord_flip()
-```
-```{r}
-visdat::vis_miss(data[, 41:81], cluster = TRUE) + coord_flip()
-```
 
 
 1stFlrSF

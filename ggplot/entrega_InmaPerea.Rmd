@@ -170,7 +170,19 @@ ggtitle('Histograma del precio de la vivienda')
 ```{r}
 ggplot(data, aes(forcats::fct_infreq(LotConfig))) + geom_bar()
 ```
-
+```{r}
+pie <- ggplot(data, aes(x = "", fill =Exterior1st )) + 
+  geom_bar(width = 1) +
+  theme(axis.line = element_blank(), 
+        plot.title = element_text(hjust=0.5)) + 
+  labs(fill="class", 
+       x=NULL, 
+       y=NULL, 
+       title="Pie Chart of class", 
+       caption="Source: mpg")
+  
+pie + coord_polar(theta = "y", start=0)
+```
 
 
 ```{r}

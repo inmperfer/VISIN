@@ -287,7 +287,66 @@ geom_density2d(bins = 4, color = "red") +
 geom_smooth()
 ```
 
+# Análisis gráfico con  modelos
+
 ```{r}
+modelo_lineal <- lm(SalePrice ~ TotalBsmtSF, data = data)
+
+ggplot(data, aes(TotalBsmtSF, SalePrice)) + geom_point() +
+geom_abline(intercept = coef(modelo_lineal)[1],
+slope = coef(modelo_lineal)[2],
+color = "red")
+```
+
+
+
+```{r}
+modelo_lineal <- lm(SalePrice ~ TotalBsmtSF, data = data)
+
+ggplot(data, aes(TotalBsmtSF, SalePrice)) + geom_point() +
+geom_abline(intercept = coef(modelo_lineal)[1],
+slope = coef(modelo_lineal)[2],
+color = "red")
+```
+
+```{r}
+data2 <- data %>% mutate(rel_price = resid(modelo_lineal))
+ggplot(data2, aes(TotalBsmtSF, rel_price)) +
+geom_point()
+```
+
+```{r}
+deseas <- function(y, x) {
+resid(lm(y ~ factor(x), na.action = na.exclude))
+}
+
+
+data3 <- data %>%
+group_by(Neighborhood) %>%
+mutate(rel_sales = deseas(OverallQual, SalePrice))
+
+models <- data3 %>%
+group_by(Neighborhood) %>%
+do(mod = lm(log2(SalePrice) ~ OverallQual,
+data = ., na.action = na.exclude))
+head(models)
+```
+
+```{r}
+model_sum <- models %>% broom::glance(mod)
+head(model_sum, 4)
+```
+```{r}
+ggplot(model_sum, aes(r.squared, reorder(Neighborhood, r.squared))) +
+geom_point()
+```
+
+```{r}
+obs_sum <- models %>% broom::augment(mod)
+head(obs_sum, 5)
+
+ggplot(obs_sum, aes(abs(.std.resid))) +
+geom_histogram(binwidth = 0.1)
 ```
 
 

@@ -164,6 +164,7 @@ a.linkedin:hover{text-decoration:underline;color:#000;}
 img.half {width:350px;display:inline-block;vertical-align:bottom;border:0px;outline:0px;}
 .half-content {width:450px;display:inline-block;vertical-align:bottom;margin:0px;padding:0px;}
 .half-content.aboutMe b {font-weight:normal;font-family:CorpoSHeavy;padding-bottom:1px;border-bottom:1px dotted #999;color:#666;}
+span.heading {font-size:18px;color:#2f3391;font-weight:bold;margin:0px;padding:0px;margin-bottom:5px;display:block;}
 span.break {display:block;height:5px;}
 .section .full-content b{color:#2f3391;font-weight:normal;font-size:14px;font-family:CorpoSItalic;display:inline-block;padding:2px 5px;border-bottom:0.5px dotted #2f3391}
 table.new-chart  {border:0px;margin:0px;width:100%;}

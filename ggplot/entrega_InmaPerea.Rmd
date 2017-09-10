@@ -1,6 +1,6 @@
 ---
-title: "Evaluación asigunaturas Visualización de datos y Visualización de la información"
-subtitle: 'Gráficas con ggplot'
+title: "Evaluación asiguaturas VISIN y VISDAT"
+subtitle: 'Análisis gráfico con ggplot'
 author: "Inmaculada Perea Fernández"
 date: "Agosto 2017"
 output: pdf_document
@@ -33,7 +33,7 @@ if (!require('ggExtra')) install.packages('ggExtra'); library('ggExtra')
 
 
 ```{r}
-# deshabilita la notación científica
+# Deshabilita la notación científica
 options(scipen=999)
 
 # Establece tema por defecto
@@ -97,10 +97,13 @@ ggplot(data, aes(forcats::fct_infreq(Neighborhood))) +
        title="Barrios en los que se ubican las viviendas en venta") +
   theme_minimal()
 ```
+
+
 ### 3.1.2 Gráficos de sectores
 
+
 ```{r message=FALSE, warning=FALSE}
-pie <- ggplot(data, aes(x = "", fill =Exterior1st )) + 
+pie <- ggplot(data, aes(x = "", fill=Exterior1st)) + 
   geom_bar(width = 1) +
   theme(axis.line = element_blank(), 
         plot.title = element_text(hjust=0.5)) + 
@@ -140,7 +143,7 @@ g2<-ggMarginal(g, type = "histogram", fill="transparent")
 plot(g2)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 g <- ggplot(data, aes(YearBuilt, SalePrice)) + 
   geom_count() + 
   geom_smooth(method="lm", se=F) +
@@ -192,7 +195,7 @@ ggplot(data, aes(reorder(Neighborhood, SalePrice), SalePrice)) +
   theme_light() +
   labs(y="Precio de venta", 
        x="Vecindario", 
-       title="Precio de según vecindario")
+       title="Precio de venta según vecindario")
   
 ```
 
@@ -213,7 +216,7 @@ ggplot(data, aes(x=TotRmsAbvGrd, y=FullBath)) +
 ```{r message=FALSE, warning=FALSE}
 data %>% select(YearBuilt, YearRemodAdd) %>%    
   mutate(Remodeled = as.integer(YearBuilt != YearRemodAdd)) %>% 
-  ggplot(aes(x= factor(x = Remodeled, labels = c( 'No','Yes')))) + 
+  ggplot(aes(x= factor(x = Remodeled, labels = c( 'No','Sí')))) + 
   geom_bar(fill="steelblue", colour="gray") +  
   labs(x="Remodelación de la vivienda", 
        y="Frecuencia", 
@@ -253,8 +256,8 @@ ggplot(data, aes(SalePrice, as.factor(MoSold))) +
   coord_flip() +
   facet_grid(YrSold ~ ., as.table=FALSE) +
   theme_light() + 
-  labs(x="Mes de venta", 
-       y="Precio de la vivienda", 
+  labs(x="Precio de venta / Año de venta", 
+       y="Mes de venta", 
        title="Precio de la vivienda vs Mes y año de venta") +
   scale_colour_gradientn(colours=rainbow(6))
 ```
@@ -266,10 +269,10 @@ ggplot(data, aes(ExterQual, SalePrice, colour=YearBuilt)) +
   theme_light() + 
   coord_flip() +
   scale_colour_gradientn(colours=rainbow(6)) +
-  labs(x="Calidad de los exteriores de la vivienda", 
+  labs(x="Calidad de los exteriores / Configuración del terreno", 
        y="Precio de venta",
        color="Año de construcción",
-       title="Precio de la vivienda vs Año de construcción y Calidad del exterior")
+       title="Precio venta vs Año construcción, Calidad exterior y Configuración terreno ")
 ```
 
 
@@ -279,10 +282,10 @@ ggplot(data, aes(YearBuilt, SalePrice, colour=GarageQual)) +
   facet_grid(as.factor(OverallQual) ~ ., as.table=FALSE) +
   coord_flip() +
   theme_light() +
-  labs(x="Año de construcción / calidad de los materiales", 
+  labs(x="Año de construcción / Calidad de los materiales", 
        y="Precio de venta",
-       color="calidad del garage",
-       title="Precio de venta vs Calidad del garaje y de los materiales y año de construcción")
+       color="Calidad del garaje",
+       title="Precio venta vs Calidad garaje, materiales y año de construcción")
 ```
 
 ### 3.3.2 Gráficos de puntos
@@ -377,7 +380,7 @@ ggplot(data = data, aes(x=GarageYrBlt, y=SalePrice)) +
   theme_light() +
   labs(y="Precio de la vivienda", 
        x="Año de construcción de la vivienda", 
-       title="Valores perdidos pra el año de contrucción vs Precio de venta")
+       title="Valores perdidos según Año de contrucción y Precio de venta")
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -385,7 +388,7 @@ ggplot(data = data, aes(x=LotFrontage, y=SalePrice)) +
   geom_missing_point() + 
   theme_light() +
   labs(y="Precio de la vivienda", 
-       x="Anchura de la calle", 
+       x="Anchura de la calle (ft)", 
        title="Valores perdidos para la anchura de la calle vs Precio de venta")
 ```
 
@@ -405,7 +408,9 @@ ggplot(data = bind_shadow(data), aes(x = SalePrice, color = LotFrontage_NA)) +
 geom_density()+ 
   theme_light() +
   labs(y="Densidad", 
-       x="Anchura de la calle (ft)")
+       x="Precio de venta",
+       fill="Anchura de la calle (ft)",
+       title="Distribución de valores perdidos Anchura de la calle vs Precio venta")
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -413,7 +418,8 @@ ggplot(data = bind_shadow(data), aes(x = SalePrice, color = MasVnrType_NA)) +
   geom_density()+ 
   theme_light() +
   labs(y="Densidad", 
-       x="Tipo de materiales")
+       x="Precio de venta",
+       title="Distribución de valores perdidos Tipo de materiales vs Precio venta")
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -421,7 +427,8 @@ ggplot(data = bind_shadow(data), aes(x = SalePrice, color = MasVnrArea_NA)) +
   geom_density() +
   theme_light() +
   labs(y="Densidad", 
-       x="Superfice construida (ft2)")
+       x="Precio de venta",
+       title="Distribución de valores perdidos superficie construida vs Precio venta")
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -429,7 +436,8 @@ ggplot(data = bind_shadow(data), aes(x = SalePrice, color = GarageYrBlt_NA)) +
    geom_density() +
    theme_light() +
    labs(y="Densidad", 
-        x="Año de construcción del garaje)")
+        x="Precio venta",
+        title="Distribución valores perdidos Año de construcción garaje vs Precio venta")
 ```
 
 
@@ -450,14 +458,11 @@ ggplot(data, aes(1, SalePrice)) +
 ```{r message=FALSE, warning=FALSE}
 ggplot(data, aes(SaleCondition, SalePrice)) +
   geom_boxplot(outlier.colour = "tomato2") +
-  theme_minimal()
+  theme_minimal() +
+  labs(y="Precio de la vivienda", 
+       x="Condiciones de venta")
 ```
 
-
-```{r message=FALSE, warning=FALSE}
-ggparcoord(data, columns = 2:10, scale = "uniminmax") + 
-  theme_light()
-```
 
 ```{r message=FALSE, warning=FALSE}
 ggplot(data, aes(factor(Neighborhood), SalePrice)) + 
@@ -466,6 +471,15 @@ ggplot(data, aes(factor(Neighborhood), SalePrice)) +
   xlab('Vecindario')+ 
   ylab("Precio de venta")
 ```
+
+
+```{r message=FALSE, warning=FALSE}
+ggparcoord(data, columns = 2:10, scale = "uniminmax") + 
+  theme_light() +
+  labs(x="Variable", 
+       y="Valor")
+```
+
 
 ```{r message=FALSE, warning=FALSE}
 ggplot(data, aes(TotalBsmtSF, SalePrice)) + 
@@ -484,7 +498,8 @@ ggplot(data, aes(YearBuilt, SalePrice)) +
   geom_density2d(bins = 4, color = "red") +
   geom_smooth() +
   xlab("Año de construcción") +
-  ylab("Precio de venta")
+  ylab("Precio de venta") +
+  theme_minimal()
 ```
 
 # 6. Análisis gráfico con  modelos

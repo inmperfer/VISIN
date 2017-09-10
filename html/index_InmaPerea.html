@@ -1,0 +1,130 @@
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link href="https://fonts.googleapis.com/css?family=Merriweather|Montserrat" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="styles.css">
+		
+		<script>
+			//Al igual que con la hoja de estilos css, los scripts de javascript pueden ir en un archivo aparte.
+			//La forma de incluirlo seria asi: <script src="myscripts.js"> cerrando a continuacion la etiqueta.
+			//
+			//Esta es la unia funcion que vamos a definir para nuestra pagina web. Por supuesto se pueden definir tantas como se quiera.
+			//La funcion toma 3 parametros, el primero nos hace falta para saber cual es el boton que debe activarse (pintar el texto de blanco)
+			//y los otros dos parametros son los id's de la imagen que deseamos mostrar y de la que queremos ocultar.
+			function unhide(button_element, show_id, hide_id){
+				var show_element = document.getElementById(show_id)
+				var hide_element = document.getElementById(hide_id)
+				
+				show_element.className = "visible";//Esto equivale a asignar <img src="..." class="visible">. Como en el css hemos asignado .visible{display: block}, esta imagen quedara visible
+				hide_element.className = "hidden";//Esto equivale a asignar <img src="..." class="hidden">. Como en el css hemos asignado .hidden{display: none}, esta imagen quedara invisible
+				
+				//En el caso de tener mas de dos botones seria mejor un enfoque mas parecido a este. Donde recogemos en una variable todos los botones activos y con un for loop los desactivamos todos
+				var active_buttons = document.getElementsByClassName("button_active");
+				
+				for(var i = 0; i<active_buttons.length; i++){
+					active_buttons[i].className = "button_inactive";//En css hemos asignado un color de texto gris claro a los elementos con class="button_inactive" para que no resalten
+				}
+				
+				//Finalmente solamente activamos el boton que hemos pinchado (this).
+				//Ojo! El elemento que queremos activar es el <span> que hay dentro de <a href="#" onclick="...">, por tanto es el primer hijo 
+				button_element.firstChild.className = "button_active";//En css hemos asignado un color de texto blanco a los elementos con class="button_active" para que resalten
+			}
+		</script>
+	</head>
+	
+	<body>
+		<div class="main">
+			<div class="wrapper"><!-- Aqui hemos introducido un nuevo <div> para poder implementar una version mas elegante del centrado del contenido en la pantalla -->
+				<div class="header">
+					Riesgos percibidos <br> vs <br> principales causas de muerte
+				</div>
+				
+				<div class="sub1" id="sub1_1">
+					<div class="sub2" id="sub2_1">
+						Text 01 ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make 
+						a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+						remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
+						Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+					</div>
+					<div class="sub2" id="sub2_2">
+						Text 02 Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+						standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+						specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+						It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
+						publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+					</div>
+					<div class="sub2" id="sub2_3">
+						Text 03 Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+						dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
+						in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
+						Aldus PageMaker including versions of Lorem Ipsum.
+					</div>
+				</div>
+				
+				<div class="sub1" id="sub1_2">
+					<div class="sub2" id="sub2_4">
+						<div class="button">
+							<!-- Aqui usamos el atributo onclick de la etiqueta <a> para llamar a la funcion javascript que hemos definido arriba en <script>.
+							Para no dejar el href en blanco se suele usar #, aunque oras formas tambien son posibles.
+							Ademas, `return false` se usa para que el navegador no siga el enlace al pinchar sobre el. Se puede omitir pero es mas correcto asi.
+							Observad que como parametros de la funcion estamos pasando los id's de las imagenes que queremos mostrar/ocultar y el propio elemento boton (this)-->
+							<a href="#" onclick="unhide(this, 'corrupdcha', 'corrupizq'); return false;"><span class="button_active">Riesgos percibidos vs Riesgo real</span></a>
+						</div>
+						
+						<div class="button">
+							<a href="#" onclick="unhide(this, 'corrupizq', 'corrupdcha'); return false;"><span class="button_inactive">Riesgos percibidos vs Producción energía</span></a>
+						</div>
+						
+						<img src="imgs/risk_perception_es.jpg" class="visible" id="corrupdcha" width="100%"/>
+						<img src="imgs/deaths_energy.jpg" class="hidden" id="corrupizq" width="100%"/>
+						<br><br>
+						<span class="caption">Grafica de la corrupcion en Espa&ntilde;a</span>
+						
+					</div>
+					
+					<div class="sub2" id="sub2_5">
+						<img src="imgs/comparison_fatalities.jpg" width="100%"/>
+						<br><br>
+						<span class="caption">Mapa de la corrupcion en Espa&ntilde;a</span>
+					</div>
+					
+					<div class="verticalspacer"></div>
+					
+					<div class="sub2" id="sub2_6">
+						Proyecto patrocinado por:<br><br>
+						<img class="logo" src="imgs/us.gif"/>
+						<br><br>
+						Autor: Inmaculada Perea Fernández
+					</div>
+					
+				</div>
+				
+				<div class="sub1" id="sub1_3">
+					<div class="sub2" id="sub2_7">
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+						standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+						a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
+						unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently 
+						with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+					</div>
+					<div class="sub2" id="sub2_8">
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+						dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised 
+						in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like 
+						Aldus PageMaker including versions of Lorem Ipsum.
+					</div>
+					<div class="sub2" id="sub2_9">
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+						dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised 
+						in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like 
+						Aldus PageMaker including versions of Lorem Ipsum.
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

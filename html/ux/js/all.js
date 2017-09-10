@@ -122,8 +122,8 @@ $(document).ready(function() {
   })
   .done( function( instance ) {
     $(".loading-content img").attr( 'src','images/giphy-2.gif');
-    $(".statusImage").html( 'All done. Cheers!');
-    $(".loading-stuff").html( 'All done. Cheers!');
+    $(".statusImage").html( 'Cargando...');
+    $(".loading-stuff").html( 'Cargando...');
     $('.loading-content').delay(1000).fadeOut(500); 
     setTimeout(function(){
 	    $('.header-wrapper').removeClass('initial');

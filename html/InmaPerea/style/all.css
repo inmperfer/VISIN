@@ -100,17 +100,14 @@ body {background:#ffffff;font-family: CorpoS;color:#444;margin:0px;padding:0px;f
 .tile-section ul li {list-style-type:none;padding:0px;margin:0px;border-radius:0px;display:inline-block;margin:40px 40px 0px 40px;width:222px;vertical-align:top;text-align:left;position:relative;overflow:hidden;}
 .tile-section ul li img{height:220px;width:220px;border:1px solid #666;display:block;cursor:pointer;}
 
-/* .tile-section ul li img.onHover{display:block;position:absolute;top:-220px;left:1px;border:0px;}
-.tile-section ul li:hover img.onHover{animation-name: example;animation-duration: 1s;animation-iteration-count: 1;} */
 
-.tile-section ul li span.Details{display:block;padding-top:20px;font-size:16px;font-family:HelveticaMedium;position:relative;height:80px;}
+.tile-section ul li span.Details{display:block;padding-top:10px;font-size:16px;font-family:HelveticaMedium;position:relative;height:80px;}
 a.linkedin {text-decoration:none;padding-right:20px;background:url('../images/open-item-newtab-icon.png') center right no-repeat;color:#444;}
 a.linkedin:hover{text-decoration:underline;color:#000;}
 .tile-section ul li span.moreDetails small.projectType{position:absolute;bottom:10px;width:100%;text-align:center;color:#454545;}
 .tile-section ul li span.Details small.projectBrief{position:absolute;top:30px;left:0px;opacity:1;}
 
-/* .tile-section ul li:hover span.Details small.projectType{position:absolute;bottom:5px;left:0px;opacity:1;}
-.tile-section ul li:hover span.Details small.projectBrief{position:absolute;bottom:5px;left:0px;opacity:0;}*/
+
 .tile-section ul li:hover span.Details small.projectBrief{color:#454545;}
 .tile-section ul li span small {display:block;font-size:12px;font-weight:normal;color:#999;font-family:HelveticaLight;transition: all .2s ease-in-out;-moz-transition: all .2s ease-in-out;-webkit-transition: all .2s ease-in-out;}
 .tile-section ul li span.moreDetails{position:absolute;height:220px;width:220px;top:-20px;left:1px;background:rgba(255,255,255,0.8);transition: all .2s ease-in-out;-moz-transition: all .2s ease-in-out;-webkit-transition: all .2s ease-in-out;opacity:0;cursor:pointer;}
@@ -152,7 +149,7 @@ a.linkedin:hover{text-decoration:underline;color:#000;}
 
 .body-wrapper {display:block;width:96%;width:1005px;margin:0px auto;position:relative;}
 .showcase-wrapper {display:block;margin:0px auto;margin-top:60px;position:relative;border-bottom:0.5px solid #ccc;padding-bottom:40px;margin-bottom:50px;}
-.showcase-wrapper .section-left {width:200px;height:200px;display:inline-block;vertical-align:top;}
+.showcase-wrapper .section-left {width:200px;height:250px;display:inline-block;vertical-align:top;}
 .showcase-wrapper .section-left img{padding:4px;}
 .showcase-wrapper .section-right {width:750px;height:auto;display:inline-block;vertical-align:top;padding-left:50px;}
 .showcase-wrapper .section-right h1{font-size:16px;color:#2f3391;font-weight:normal;margin:0px;padding:0px;margin-bottom:5px;}

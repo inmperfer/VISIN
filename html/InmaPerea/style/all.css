@@ -39,8 +39,6 @@ body {background:#ffffff;font-family: CorpoS;color:#444;margin:0px;padding:0px;f
 .end-notes span{font-size:10px;color:#bbb;}
 
 
-
-
 .header-project{width:100%;height:418px;position:relative;z-index:1000;}
 .header-project .main-heading{width:100%;display:inline-block;vertical-align:middle;text-align:center;color:#fff;padding-top:140px;}
 .header-project .main-heading h1{font-size:50px;margin:0px;padding:10px 0px;font-weight:normal;font-family:CorpoSHeavy;transition: all .2s ease-in-out;-moz-transition: all .2s ease-in-out;-webkit-transition: all .2s ease-in-out;}
@@ -76,16 +74,9 @@ span.heading {font-size:18px;color:#2f3391;font-weight:bold;margin:0px;padding:0
 span.break {display:block;height:5px;}
 .section .full-content b{color:#2f3391;font-weight:normal;font-size:14px;font-family:CorpoSItalic;display:inline-block;padding:2px 5px;border-bottom:0.5px dotted #2f3391}
 
-
-
 .heading.main {font-size:25px !important;font-family: CorpoSHeavy;font-weight:bold;text-transform:uppercase;margin-bottom:20px !important;}
 
-
-
-
 .thumbnail {height:250px;padding:10px;margin:10px 20px;}
-
-
 
 .image-source-link {
 	display:none;
@@ -103,4 +94,3 @@ span.break {display:block;height:5px;}
 .header-wrapper.initial .topMenu-home {opacity:0;}
 .header-wrapper.initial ul {opacity:0;}
 .header-wrapper .loading-stuff {display:block;color:#fff;width:100%;text-align:center;padding-top:}
-
